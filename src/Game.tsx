@@ -1,8 +1,12 @@
 import React from 'react';
 import Board from './Board';
 
+type historyElement ={
+  squares:string[],
+  selectedSquare:number
+}
 interface IGameState{
-  history:any[],
+  history:historyElement[],
   stepNumber:number,
   xIsNext:boolean;
 }
@@ -12,7 +16,9 @@ interface IGameState{
       this.state = {
         history: [{
           squares: Array(9).fill(null),
+          selectedSquare:-1
         }],
+        
         stepNumber:0,
         xIsNext:true,
       }
@@ -24,10 +30,12 @@ interface IGameState{
       const winner = this.calculateWinner(current.squares);
       const moves = history.map((step,move)=>{
         const desc = move?'Go to move #' + move : 'Go to game start';
+        const pos = this.OneDToTwoD(step.selectedSquare);
         return (
           <li key={move}>
             <button onClick={()=> this.jumpTo(move)}>
               {desc}
+              {step.selectedSquare!== -1 ? ` Selected Square=(${pos[0]},${pos[1]})`:''}
             </button>
           </li>
         )
@@ -65,7 +73,7 @@ interface IGameState{
       }
       squares[i] = this.state.xIsNext?'X':'O';
       this.setState({
-        history:history.concat([{squares: squares}]),
+        history:history.concat({squares: squares, selectedSquare: i}),
         stepNumber:history.length,
         xIsNext: !this.state.xIsNext,});
     }
@@ -95,7 +103,14 @@ interface IGameState{
       }
       return null;
     }
+    OneDToTwoD(i:number){
+      let row = Math.floor(i/3);
+      let col = Math.floor(i%3);
+  
+      return [row, col];
+    }
   }
+  
 
   export default Game;
   

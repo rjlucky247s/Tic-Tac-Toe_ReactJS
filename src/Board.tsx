@@ -1,32 +1,32 @@
 import React from 'react';
-import Square from './Square';
 
-export class Board extends React.Component<any,any> {  
-  renderSquare(i:number) {
-      return <Square value= {this.props.squares[i]} onClick={()=>this.props.onClick(i)}/>;
-    }
-  
-    render() {  
+export default function Board(props:any) {  
       return (
         <div> 
           <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
+            {renderSquare(0,props)}
+            {renderSquare(1,props)}
+            {renderSquare(2,props)}
           </div>
           <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
+          {renderSquare(3,props)}
+          {renderSquare(4,props)}
+          {renderSquare(5,props)}
           </div>
           <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
+          {renderSquare(6,props)}
+          {renderSquare(7,props)} 
+          {renderSquare(8,props)}
           </div>
         </div>
       );
-    }
+  }
+  function renderSquare(i:number, props:any) {
+    return <Square value= {props.squares[i]} onClick={()=>props.onClick(i)}/>;
   }
 
-  export default Board;
+  function Square(props:any){
+    return (
+    <button className="square" onClick={props.onClick}>{props.value}</button>
+    );
+  }
